@@ -97,3 +97,26 @@ mSETIt5sw3WXtHnJoczWfZJ0O6hrF6F7jT7QKW0yRXQ
 1. 쿠키가 탈취되어 SessionId가 노출되어 세션 아이디로 해당 사용자 인 척하는 공격이 발생할 수 있다. (Session Hijacking?)
 2. 별도의 세션 저장소가 필요하다. (보통 redis나..)
 3. 쿠키는 단일 도메인 및 서브 도메인에서만 작동하도록 설계되어 여러 도메인에서 관리하기 어렵다.
+
+## OAuth 2.0
+
+상세하게 설명하면 너무 길어지니, 내가 개발하는 서버단과 Kakao Login API 서버, 그리고 사용자 입장에서의 로그인 과정 흐름만 파악하여 정리한다.
+
+### 로그인 과정
+
+내가 개발하는 서버를 Martin 이라고 하고, Kakao loign API를 사용, 사용자는 oeeen이라는 사람이라고 해보자.
+
+사전작업으로 일단 Martin이라는 어플리케이션은 kakao api에 앱을 등록해야 한다. 이 등록과정에서 Client Id, Client Secret, Redirect URL을 설정한다.
+
+1. 사용자 oeeen은 Martin app에서 kakao로 login 버튼을 누른다.
+2. Martin App은 카카오 서버로 Client ID, Redirect URL을 포함해서 oeeen이라는 사용자를 보낸다. 예를 들어 다음과 같은.. `https://resource.server/?client_id=1&scope=B,C&redirect_uri=https://smjeon.dev/done`
+3. 카카오 서버는 Client ID가 있는지 확인하고, Redirect URL이 일치하는지 확인 후, 일치한다면 요청한 권한을 Martin app에 허용 할 것이냐라는 메세지를 보여준다.
+4. 허용 한다면, 카카오 서버는 이 정보를 기억해둔다.
+5. 이제 카카오 서버는 인증 코드(Authorization code)를 담아서 oeeen 이라는 사용자를 app이 설정해둔 redirect url로 redirect 시킨다.
+6. Martin App은 oeeen으로부터 authorization code를 받는다.
+7. Martin App은 받은 Authorization code를 가지고, Client Id, Client Secret, Authorization Code를 가지고 카카오 서버에 사용자 oeeen에 대한 Access Token을 요청한다.
+8. Martin App은 받은 Access Token을 가지고 카카오 서버에 사용자 oeeen의 권한을 얻을 수 있다.
+
+참고로 카카오 로그인 API의 경우는, 설정 > 고급 > Client Secret에서 생성한 client_secret 코드 active 상태일 경우에는 필수로 설정해야 한다.
+
+추가적으로 refresh_token은 설정된 유효기간 만큼 유효하고, refresh token의 만료가 1달 이내로 남은 시점에서 사용자 토근 갱신 요청을 하면 갱신된 access token과 갱신된 refresh token이 함께 반환된다. 요청은 다음과 같이 한다.
