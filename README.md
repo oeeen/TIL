@@ -19,6 +19,7 @@
 - [Exception](/2020/04.09/Exception.md)
 - [Date, Time API](/2020/04.12/DateTimeApi.md)
 - [Default Method](/2020/04.13/DefaultMethod.md)
+- [Lambda](/2020/04.14/Java8_Lambda.md)
 
 ## Spring
 
