@@ -37,6 +37,8 @@
 ## Network
 
 - [TCP vs. UDP](/2020/04.11/TCPvsUDP.md)
+- [TCP 성능](/2020/04.17/TCP성능.md)
+- [TCP 상태](/2020/04.17/TCP_State.md)
 
 ## Operating System
 
