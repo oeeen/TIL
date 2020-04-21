@@ -1,9 +1,12 @@
 import dev.smjeon.til.generic.Coin;
+import dev.smjeon.til.generic.MySampleList;
 import dev.smjeon.til.generic.Stamp;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GenericTest {
 
@@ -19,5 +22,14 @@ public class GenericTest {
     void classCastExceptionTestUsingGeneric() {
         List<Stamp> stamps = new ArrayList<>();
         stamps.add(new Stamp());
+    }
+
+    @Test
+    void myList() {
+        MySampleList<String> strings = new MySampleList<>();
+        for (int i = 0; i < 10; i++) {
+            strings.add("Test");
+        }
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> strings.get(10));
     }
 }
