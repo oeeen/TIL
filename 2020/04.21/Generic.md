@@ -37,3 +37,92 @@ Set<?> 와 로 타입 Set은 뭐가 다를까? - Set<?> 는 안전, Set은 안�
 ### 핵심 정리 (Raw Type)
 
 Raw Type을 사용하면 런타임에 Exception이 발생할 수 있으니 쓰지말자.
+
+## Generic 사용
+
+```java
+public interface RowMapper<T> {
+    T mapRow(ResultSet rs) throws Exception;
+}
+```
+
+위와 같이 클래스(인터페이스)에 사용할 수도 있고, 아래처럼 메서드에만 사용할 수도 있다.
+
+```java
+public class JdbcTemplate {
+    private static final Logger logger = LoggerFactory.getLogger(JdbcTemplate.class);
+    private DataSource dataSource;
+
+    public <T> List<T> query(String query, RowMapper<T> rowMapper, Object... objects) {
+        List<T> results = new ArrayList<>();
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement pstmt = createPreparedStatement(con, query, objects);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                T t = rowMapper.mapRow(rs);
+                results.add(t);
+            }
+        } catch (Exception e) {
+            logger.error("Error occurred while executing Query", e);
+            throw new JdbcTemplateException(e);
+        }
+        return results;
+    }
+
+    private PreparedStatement createPreparedStatement(Connection con, String sql, Object... objects) throws SQLException {
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        for (int i = 0; i < objects.length; i++) {
+            pstmt.setObject(i + 1, objects[i]);
+        }
+        return pstmt;
+    }
+}
+```
+
+### List 만들기
+
+ArrayList를 참고하여 MySampleList라는 클래스를 만들어보았다.
+
+참고로 ArrayList는 맨 처음 List가 생성될 때는 빈 array를 생성하고 element가 하나 추가되면 default capacity(=10)의 array를 생성하고 element를 추가한다. 그리고 설정된 배열 크기보다 커지면 `int newCapacity = oldCapacity + (oldCapacity >> 1);`로 1.5배만큼 큰 배열을 선언하고 array copy한다.
+
+이런 구현까지 다 하기에는 너무 과한 것 같아 기본적인 구현만 따라해봤다.
+
+```java
+public class MySampleList<E> {
+    private static final int DEFAULT_CAPACITY = 10;
+
+    private static final Object[] DEFAULT_CAPACITY_ELEMENT = {};
+
+    private Object[] elements;
+    private int size;
+
+    public MySampleList() {
+        this.elements = DEFAULT_CAPACITY_ELEMENT;
+    }
+
+    public boolean add(E e) {
+        checkEmpty();
+        elements[size++] = e;
+        return true;
+    }
+
+    private void checkEmpty() {
+        if (elements == DEFAULT_CAPACITY_ELEMENT) {
+            elements = Arrays.copyOf(elements, DEFAULT_CAPACITY);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public E get(int index) {
+        return (E) elements[index];
+    }
+}
+```
+
+문제가 많은 코드이긴 하다. 일단 생성자도 기본 생성자밖에 없을 뿐더러, DEFAULT_CAPACITY(=10) 를 넘어가는 순간 ArrayIndexOutOfBoundsException가 발생할 것이다.
+
+또 get 에서도 index를 검사하지 않기 때문에 동일하게 ArrayIndexOutOfBoundsException가 발생할 수 있다. 그 외에도 ArrayList와 비교하여 여러가지 문제가 발생할 수 있지만 실습차원이므로 여기까지만 구현했다.
+
+get 메서드에 Object array를 E type으로 캐스팅 해주는데 add 하는 경우에 E type만 받을 수 있기 때문에 warning을 없애는 `@SuppressWarnings("unchecked")`을 선언해도 된다고 생각했다.
+
+명확하게 타입 안정성을 따진 후에 경고를 무시해도 된다고 생각했을 때만 `@SuppressWarnings("unchecked")`를 선언하도록 하자.
