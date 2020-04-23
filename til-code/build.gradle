@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'java-library'
 }
 
 group 'org.example'
@@ -14,4 +15,7 @@ repositories {
 dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+
+    api 'org.apache.httpcomponents:httpclient:4.5.7'
+    implementation 'org.apache.commons:commons-lang3:3.5'
 }
