@@ -30,6 +30,7 @@
 - [SpringBoot의 특징과 장점](/2020/04.08/SpringBoot.md)
 - [Controller, RestController, Service, Component](/2020/04.09/Spring.md)
 - [AOP, DI](/2020/04.07/AOP_DI.md)
+- [Spring Database 초기화](/2020/04.28/Spring_Database_Initialization.md)
 
 ## JPA
 
@@ -63,3 +64,4 @@
 
 - [동기 vs. 비동기](/2020/04.06/동기vs비동기.md)
 - [Gradle](/2020/04.22/Gradle.md)
+- [Dynamic Programming](/2020/04.27/Dynamic%20Programming.md)
