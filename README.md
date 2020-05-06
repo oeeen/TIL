@@ -65,3 +65,4 @@
 - [동기 vs. 비동기](/2020/04.06/동기vs비동기.md)
 - [Gradle](/2020/04.22/Gradle.md)
 - [Dynamic Programming](/2020/04.27/Dynamic%20Programming.md)
+- [AWS 인프라 구축 가이드 읽고 정리한 글](/2020/05.06/aws_infra_structure_guide.md)
