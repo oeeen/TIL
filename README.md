@@ -12,6 +12,7 @@
 - [Frontend](#frontend)
 - [Web](#web)
 - [InfraStructure](#infrastructure)
+- [Algorithm](#algorithm)
 - [Etc](#etc)
 
 ## Java
@@ -60,11 +61,15 @@
 
 - [무중단 배포 방식](2020/04.13/Deployment.md)
 
+## Algorithm
+
+- [Dynamic Programming](/2020/04.27/Dynamic%20Programming.md)
+- [BufferedReader와 Scanner](/2020/05.16/BufferedReader_Scanner.md)
+- [StringTokenizer](/2020/05.17/StringTokenizer.md)
+
 ## Etc
 
 - [동기 vs. 비동기](/2020/04.06/동기vs비동기.md)
 - [Gradle](/2020/04.22/Gradle.md)
-- [Dynamic Programming](/2020/04.27/Dynamic%20Programming.md)
 - [AWS 인프라 구축 가이드 읽고 정리한 글](/2020/05.06/aws_infra_structure_guide.md)
 - [Real MySQL 읽고 정리](/2020/RealMySQL_Index.md)
-- [StringTokenizer](/2020/05.17/StringTokenizer.md)
