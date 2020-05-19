@@ -51,6 +51,7 @@
 ## Frontend
 
 - [ES6 변경점](/2020/05.19/ES6_major_change.md)
+- [함수 리터럴](/2020/05.19/function_literal.md)
 
 ## Web
 
