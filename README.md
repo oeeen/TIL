@@ -33,6 +33,7 @@
 - [AOP, DI](/2020/04.07/AOP_DI.md)
 - [Spring Database 초기화](/2020/04.28/Spring_Database_Initialization.md)
 - [Spring Security 기초](/2020/SpringSecurity_study.md)
+- [Bean 주입 방식과 순환 참조](/2020/05.24/Bean_injection.md)
 
 ## JPA
 
