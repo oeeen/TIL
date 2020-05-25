@@ -33,6 +33,7 @@
 - [AOP, DI](/2020/04.07/AOP_DI.md)
 - [Spring Database 초기화](/2020/04.28/Spring_Database_Initialization.md)
 - [Spring Security 기초](/2020/SpringSecurity_study.md)
+- [Spring Security Login Form 인증 순서](/2020/05.25/LoginFormAuthentication.md)
 - [Bean 주입 방식과 순환 참조](/2020/05.24/Bean_injection.md)
 
 ## JPA
@@ -41,6 +42,7 @@
 
 - [Join](/2020/04.07/Join.md)
 - [Index](2020/04.07/Index.md)
+- [Database 정규화](/2020/05.25/DB_Normalization.md)
 
 ## Network
 
