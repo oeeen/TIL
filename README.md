@@ -64,6 +64,7 @@
 - [인증](/2020/04.08/Authorization.md)
 - [HTTP Method](/2020/04.12/HttpMethod.md)
 - [Web Storage](2020/04.12/WebStorage.md)
+- [WebServer vs. WAS](/2020/05.27/WebServer_WAS.md)
 
 ## InfraStructure
 
