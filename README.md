@@ -65,6 +65,7 @@
 - [HTTP Method](/2020/04.12/HttpMethod.md)
 - [Web Storage](2020/04.12/WebStorage.md)
 - [WebServer vs. WAS](/2020/05.27/WebServer_WAS.md)
+- [Cookie vs. Session](/2020/05.27/Cookie_Session.md)
 
 ## InfraStructure
 
