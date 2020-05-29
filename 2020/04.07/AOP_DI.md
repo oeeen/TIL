@@ -53,6 +53,64 @@ class AAAABBBB {
 
 DI는 클래스 사이의 의존관계를 빈 설정 정보를 바탕으로 컨테이너가 자동적으로 연결해주는 것을 말한다. 개발자들은 제어를 담당할 필요없이 빈(bean) 설정 파일에 의존관계가 필요하다는 정보만 추가해주면 된다. 컨테이너가 실행 흐름의 주체가 되어 애플리케이션 코드에 의존관계를 주입해주는 것.
 
+### Spring에서의 DI의 장점
+
+우리는 스프링 프레임워크를 사용하면서 컨트롤러에서 쉽게 서비스를 필드로 선언하고 생성자로 받는 방식으로 의존성 주입을 받고 있다.
+
+```java
+@RequestMapping("/api/users")
+@RestController
+public class UserApi {
+    private final UserService userService;
+
+    public UserApi(UserService userService) {
+        this.userService = userService;
+    }
+}
+```
+
+이런 식으로 생성자 주입을 받고 있었다. DI의 장점을 생각해보기 위해 스프링에 DI가 없었다면 우리는 코드를 어떻게 작성했었을 지 생각해보자.
+
+```java
+public class UserApi {
+    private final UserService userService;
+
+    public UserApi(UserService userService) {
+        this.userService = userService;
+    }
+}
+```
+
+뭐 이런식으로 작성할 수 있을 거다. 그런데 Controller를 ApplicationContext에서 사용하려면 어떻게 해야할까? 나의 얕은 지식으로는 다음과 같은 코드 정도밖에 작성하지 못했다. ComponentScan도 필요가 없을 것이고, Bean들을 전체적으로 스캔하는 것도 필요가 없기 때문에, 단순하게 ApplicationContext에서는 해당하는 컨트롤러를 모두 만들어 줄 것이다.
+
+```java
+// WebServerLauncher.java
+public class WebServerLauncher {
+    public static void main(String[] args) {
+        ... Tomcat 실행 코드
+    }
+}
+
+// MyWebApplicationInitializer.java
+public class MyWebApplicationInitializer implements WebApplicationInitializer {
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        DispatcherServlet dispatcherServlet = new DispatcherServlet();
+        ApplicationContext applicationContext = new ApplicationContext(MyConfiguration.class);
+        dispatcherServlet.addHandlerMapping(new AnnotationHandlerMapping(applicationContext));
+
+        dispatcherServlet.addHandlerAdapter(new HandlerExecutionHandlerAdapter());
+
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping("/");
+    }
+}
+```
+
+이렇다고 하면 ApplicationContext에서는 우리가 사용할 Controller들을 모두 new로 생성하기 위해 그 내부에서 사용할 Service, Repository등의 의존성을 모두 생성한 후 Controller를 생성해야 한다. 이런 식의 의존성들을 위해 객체를 생성하는 것을 DI를 통해서 DI Container(IoC Container)에서 생명주기를 관리해준다. 그래서 우리는 스프링 프레임워크를 사용할 때 객체의 생명주기에 신경쓰지 않고 비즈니스 로직 개발에만 신경쓸 수 있는 것이다.
+
 ### IoC Container
 
 IoC (Inversion Of Control)
