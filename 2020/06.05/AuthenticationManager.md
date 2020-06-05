@@ -36,6 +36,15 @@ for (AuthenticationProvider provider : getProviders()) {
 
 이 처럼 provider list 중에 조건에 맞지 않는(`!provider.supports(toTest)`) provider는 넘어가고, 조건에 맞는 provider를 찾아서 인증처리를 위임한다.(`result = provider.authenticate(authentication);`)
 
+내 프로젝트에서 FormLoginAuthenticationProvider의 supports는 다음과 같이 작성되어 있는데, PreAuthorizationToken일 경우에만 해당 인증처리를 수행하는 것이다.
+
+```java
+@Override
+public boolean supports(Class<?> authentication) {
+    return PreAuthorizationToken.class.isAssignableFrom(authentication);
+}
+```
+
 현재 ProviderManager의 부모 ProviderManager를 설정해서 AuthenticationProvider를 탐색할 수 있는데, 그 코드는 다음과 같다.(이 방식은 아직 사용해보지 않아서 명확하게 어떤 의미인지 모르겠다.)
 
 ```java
