@@ -38,6 +38,8 @@
 - [Spring Security SessionManagementFilter](/2020/05.31/SessionManagementFilter.md)
 - [Spring Security Architecture - 1](/2020/06.03/SpringSecurity_Architecture-1.md)
 - [Spring Security Authentication](/2020/06.04/SpringSecurity_Authentication.md)
+- [Spring Security AuthenticationManager](/2020/06.05/AuthenticationManager.md)
+- [Spring Security Authorization](/2020/06.05/Authorization.md)
 
 ## JPA
 
