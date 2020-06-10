@@ -36,6 +36,10 @@
 - [Spring Security Login Form 인증 순서](/2020/05.25/LoginFormAuthentication.md)
 - [Bean 주입 방식과 순환 참조](/2020/05.24/Bean_injection.md)
 - [Spring Security SessionManagementFilter](/2020/05.31/SessionManagementFilter.md)
+- [Spring Security Architecture - 1](/2020/06.03/SpringSecurity_Architecture-1.md)
+- [Spring Security Authentication](/2020/06.04/SpringSecurity_Authentication.md)
+- [Spring Security AuthenticationManager](/2020/06.05/AuthenticationManager.md)
+- [Spring Security Authorization](/2020/06.05/Authorization.md)
 
 ## JPA
 
