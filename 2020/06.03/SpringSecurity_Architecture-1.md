@@ -43,36 +43,36 @@ FilterChainProxy 클래스는 다음과 같이 생겼다.
 
 ```java
 public class FilterChainProxy extends GenericFilterBean {
-	// ~ Static fields/initializers
-	// =====================================================================================
+    // ~ Static fields/initializers
+    // =====================================================================================
 
-	private static final Log logger = LogFactory.getLog(FilterChainProxy.class);
+    private static final Log logger = LogFactory.getLog(FilterChainProxy.class);
 
-	// ~ Instance fields
-	// ================================================================================================
+    // ~ Instance fields
+    // ================================================================================================
 
-	private final static String FILTER_APPLIED = FilterChainProxy.class.getName().concat(
-			".APPLIED");
+    private final static String FILTER_APPLIED = FilterChainProxy.class.getName().concat(
+            ".APPLIED");
 
-	private List<SecurityFilterChain> filterChains;
+    private List<SecurityFilterChain> filterChains;
 
-	private FilterChainValidator filterChainValidator = new NullFilterChainValidator();
+    private FilterChainValidator filterChainValidator = new NullFilterChainValidator();
 
-	private HttpFirewall firewall = new StrictHttpFirewall();
+    private HttpFirewall firewall = new StrictHttpFirewall();
 
-	// ~ Methods
-	// ========================================================================================================
+    // ~ Methods
+    // ========================================================================================================
 
-	public FilterChainProxy() {
-	}
+    public FilterChainProxy() {
+    }
 
-	public FilterChainProxy(SecurityFilterChain chain) {
-		this(Arrays.asList(chain));
-	}
+    public FilterChainProxy(SecurityFilterChain chain) {
+        this(Arrays.asList(chain));
+    }
 
-	public FilterChainProxy(List<SecurityFilterChain> filterChains) {
-		this.filterChains = filterChains;
-	}
+    public FilterChainProxy(List<SecurityFilterChain> filterChains) {
+        this.filterChains = filterChains;
+    }
 
 ...
 ```

@@ -31,127 +31,127 @@
 ```java
 public class AffirmativeBased extends AbstractAccessDecisionManager {
     public void decide(Authentication authentication, Object object,
-			Collection<ConfigAttribute> configAttributes) throws AccessDeniedException {
-		int deny = 0;
+            Collection<ConfigAttribute> configAttributes) throws AccessDeniedException {
+        int deny = 0;
 
-		for (AccessDecisionVoter voter : getDecisionVoters()) {
-			int result = voter.vote(authentication, object, configAttributes);
+        for (AccessDecisionVoter voter : getDecisionVoters()) {
+            int result = voter.vote(authentication, object, configAttributes);
 
-			if (logger.isDebugEnabled()) {
-				logger.debug("Voter: " + voter + ", returned: " + result);
-			}
+            if (logger.isDebugEnabled()) {
+                logger.debug("Voter: " + voter + ", returned: " + result);
+            }
 
-			switch (result) {
-			case AccessDecisionVoter.ACCESS_GRANTED:
-				return; // 하나라도 승인나면 끝난다.
+            switch (result) {
+            case AccessDecisionVoter.ACCESS_GRANTED:
+                return; // 하나라도 승인나면 끝난다.
 
-			case AccessDecisionVoter.ACCESS_DENIED:
-				deny++;
+            case AccessDecisionVoter.ACCESS_DENIED:
+                deny++;
 
-				break;
+                break;
 
-			default:
-				break;
-			}
-		}
-        ...
+            default:
+                break;
+            }
+        }
+...
 }
 
 public void decide(Authentication authentication, Object object,
-			Collection<ConfigAttribute> configAttributes) throws AccessDeniedException {
-		int grant = 0;
-		int deny = 0;
+            Collection<ConfigAttribute> configAttributes) throws AccessDeniedException {
+        int grant = 0;
+        int deny = 0;
 
-		for (AccessDecisionVoter voter : getDecisionVoters()) {
-			int result = voter.vote(authentication, object, configAttributes);
+        for (AccessDecisionVoter voter : getDecisionVoters()) {
+            int result = voter.vote(authentication, object, configAttributes);
 
-			if (logger.isDebugEnabled()) {
-				logger.debug("Voter: " + voter + ", returned: " + result);
-			}
+        if (logger.isDebugEnabled()) {
+            logger.debug("Voter: " + voter + ", returned: " + result);
+        }
 
-			switch (result) {
-			case AccessDecisionVoter.ACCESS_GRANTED:
-				grant++; // 승인
+        switch (result) {
+        case AccessDecisionVoter.ACCESS_GRANTED:
+            grant++; // 승인
 
-				break;
+            break;
 
-			case AccessDecisionVoter.ACCESS_DENIED:
-				deny++; // 거부
+        case AccessDecisionVoter.ACCESS_DENIED:
+            deny++; // 거부
 
-				break;
+            break;
 
-			default:
-				break;
-			}
-		}
+            default:
+                break;
+            }
+        }
 
-		if (grant > deny) {
-			return; // 승인이 더 많을 경우엔 return
-		}
+        if (grant > deny) {
+            return; // 승인이 더 많을 경우엔 return
+        }
 
-		if (deny > grant) { // 거부가 더 많기 때문에 AccessDeniedException 발생
-			throw new AccessDeniedException(messages.getMessage(
-					"AbstractAccessDecisionManager.accessDenied", "Access is denied"));
-		}
+        if (deny > grant) { // 거부가 더 많기 때문에 AccessDeniedException 발생
+            throw new AccessDeniedException(messages.getMessage(
+                    "AbstractAccessDecisionManager.accessDenied", "Access is denied"));
+        }
 
-		if ((grant == deny) && (grant != 0)) { // 동수일 경우, allowIfEqualGrantedDeniedDecisions 값에 따라 결정된다.
-			if (this.allowIfEqualGrantedDeniedDecisions) {
-				return;
-			}
-			else {
-				throw new AccessDeniedException(messages.getMessage(
-						"AbstractAccessDecisionManager.accessDenied", "Access is denied"));
-			}
-		}
+        if ((grant == deny) && (grant != 0)) { // 동수일 경우, allowIfEqualGrantedDeniedDecisions 값에 따라 결정된다.
+            if (this.allowIfEqualGrantedDeniedDecisions) {
+                return;
+            }
+            else {
+                throw new AccessDeniedException(messages.getMessage(
+                        "AbstractAccessDecisionManager.accessDenied", "Access is denied"));
+            }
+        }
 
-		// To get this far, every AccessDecisionVoter abstained
-		checkAllowIfAllAbstainDecisions();
-	}
+        // To get this far, every AccessDecisionVoter abstained
+        checkAllowIfAllAbstainDecisions();
+    }
 }
 public class UnanimousBased extends AbstractAccessDecisionManager {
     public void decide(Authentication authentication, Object object,
-			Collection<ConfigAttribute> attributes) throws AccessDeniedException {
+            Collection<ConfigAttribute> attributes) throws AccessDeniedException {
 
-		int grant = 0;
+        int grant = 0;
 
-		List<ConfigAttribute> singleAttributeList = new ArrayList<>(1);
-		singleAttributeList.add(null);
+        List<ConfigAttribute> singleAttributeList = new ArrayList<>(1);
+        singleAttributeList.add(null);
 
-		for (ConfigAttribute attribute : attributes) {
-			singleAttributeList.set(0, attribute);
+        for (ConfigAttribute attribute : attributes) {
+            singleAttributeList.set(0, attribute);
 
-			for (AccessDecisionVoter voter : getDecisionVoters()) {
-				int result = voter.vote(authentication, object, singleAttributeList);
+            for (AccessDecisionVoter voter : getDecisionVoters()) {
+                int result = voter.vote(authentication, object, singleAttributeList);
 
-				if (logger.isDebugEnabled()) {
-					logger.debug("Voter: " + voter + ", returned: " + result);
-				}
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Voter: " + voter + ", returned: " + result);
+                }
 
-				switch (result) {
-				case AccessDecisionVoter.ACCESS_GRANTED:
-					grant++;
+                switch (result) {
+                case AccessDecisionVoter.ACCESS_GRANTED:
+                    grant++;
 
-					break;
+                    break;
 
-				case AccessDecisionVoter.ACCESS_DENIED: // 하나라도 인가 거부면, AccessDeniedException 발생
-					throw new AccessDeniedException(messages.getMessage(
-							"AbstractAccessDecisionManager.accessDenied",
-							"Access is denied"));
+                case AccessDecisionVoter.ACCESS_DENIED: // 하나라도 인가 거부면, AccessDeniedException 발생
+                    throw new AccessDeniedException(messages.getMessage(
+                            "AbstractAccessDecisionManager.accessDenied",
+                            "Access is denied"));
 
-				default:
-					break;
-				}
-			}
-		}
+                default:
+                    break;
+                }
+            }
+        }
 
-		// To get this far, there were no deny votes
-		if (grant > 0) {
-			return;
-		}
+        // To get this far, there were no deny votes
+        if (grant > 0) {
+            return;
+        }
 
-		// To get this far, every AccessDecisionVoter abstained
-		checkAllowIfAllAbstainDecisions();
-	}
+        // To get this far, every AccessDecisionVoter abstained
+        checkAllowIfAllAbstainDecisions();
+    }
 }
 ```
 
@@ -161,12 +161,12 @@ public class UnanimousBased extends AbstractAccessDecisionManager {
 
 ```java
 public interface AccessDecisionVoter<S> {
-	// ~ Static fields/initializers
-	// =====================================================================================
+    // ~ Static fields/initializers
+    // =====================================================================================
 
-	int ACCESS_GRANTED = 1;
-	int ACCESS_ABSTAIN = 0;
-	int ACCESS_DENIED = -1;
+    int ACCESS_GRANTED = 1;
+    int ACCESS_ABSTAIN = 0;
+    int ACCESS_DENIED = -1;
 ```
 
 ## 전체 흐름

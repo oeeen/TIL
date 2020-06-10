@@ -18,7 +18,7 @@ public class UsernamePasswordAuthenticationToken extends AbstractAuthenticationT
 
 // AbstractAuthenticationToken.java
 public abstract class AbstractAuthenticationToken implements Authentication,
-		CredentialsContainer {
+        CredentialsContainer {
 ```
 
 나 같은 경우에는 PreAuthorizationToken을 인증 전 토큰, PostAuthorizationToken을 인증 후 토큰으로 사용했다.
@@ -39,10 +39,10 @@ Authentication 객체가 저장되는 저장소. ThreadLocal 에 저장되어서
 
 ```java
 public class HttpSessionSecurityContextRepository implements SecurityContextRepository {
-	/**
-	 * The default key under which the security context will be stored in the session.
-	 */
-	public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
+    /**
+     * The default key under which the security context will be stored in the session.
+     */
+    public static final String SPRING_SECURITY_CONTEXT_KEY = "SPRING_SECURITY_CONTEXT";
 ```
 
 `SPRING_SECURITY_CONTEXT`라는 키로 HttpSession에서 접근 할 수 있다. 위 클래스를 살펴보면 어떤 방식으로 Session에 SecurityContext를 저장하는지 알 수 있다.
