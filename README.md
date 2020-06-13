@@ -40,6 +40,7 @@
 - [Spring Security Authentication](/2020/06.04/SpringSecurity_Authentication.md)
 - [Spring Security AuthenticationManager](/2020/06.05/AuthenticationManager.md)
 - [Spring Security Authorization](/2020/06.05/Authorization.md)
+- [Spring Security Logout](/2020/06.13/SpringSecurity_Logout.md)
 
 ## JPA
 
