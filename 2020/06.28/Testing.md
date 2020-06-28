@@ -143,3 +143,71 @@ public void getMessageWithUserDetailsServiceBeanName() {
 ```
 
 @WithMockUser 처럼 annotation을 클래스 레벨에도 달 수 있다. 그러나 @WithMockUser와는 다르게 @WithUserDetails는 실제 유저가 존재해야한다.
+
+## 19.1.5. @WithSecurityContext
+
+우리는 @WithSecurityContext를 이용해서 우리가 원하는 SecurityContext를 만들 수 있는 커스텀 어노테이션을 만들 수 있다. 예를 들어 우리는 @WithMockCustomUser라는 어노테이션을 아래 나온 것처럼 만들 수 있다.
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory.class)
+public @interface WithMockCustomUser {
+
+    String username() default "rob";
+
+    String name() default "Rob Winch";
+}
+```
+
+@WithMockCustomUser는 @WithSecurityContext 어노테이션과 함께 사용되었음을 볼 수 있다. 이는 Spring Security Test support에게 우리가 테스트에서 SecurityContext를 만들기 위해 신호를 주는 것이다. @WithSecurityContext 어노테이션은 @WithMockCustomUser에게 새로운 SecurityContext를 제공하기 위한 SecurityContextFactory를 특정하는 것이 필요하다. SecurityContextFactory를 아래처럼 구현하는 것을 볼 수 있다.
+
+```java
+public class WithMockCustomUserSecurityContextFactory
+    implements WithSecurityContextFactory<WithMockCustomUser> {
+    @Override
+    public SecurityContext createSecurityContext(WithMockCustomUser customUser) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+        CustomUserDetails principal =
+            new CustomUserDetails(customUser.name(), customUser.username());
+        Authentication auth =
+            new UsernamePasswordAuthenticationToken(principal, "password", principal.getAuthorities());
+        context.setAuthentication(auth);
+        return context;
+    }
+}
+```
+
+나 같은 경우는 다음처럼 작성했다.
+
+```java
+// WithMockCustomUser.java
+@Retention(RetentionPolicy.RUNTIME)
+@WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory.class)
+public @interface WithMockCustomUser {
+
+    String username() default "martin";
+
+    UserRole role() default UserRole.BUYER;
+}
+
+// WithMockCustomUserSecurityContextFactory.java
+public class WithMockCustomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomUser> {
+
+    @Override
+    public SecurityContext createSecurityContext(WithMockCustomUser customUser) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+        UserContext userContext = new UserContext(1L, "aabb", customUser.username(), customUser.role());
+        PostAuthorizationToken token = new PostAuthorizationToken(userContext);
+
+        context.setAuthentication(token);
+
+        return context;
+    }
+}
+```
+
+이제 이렇게 작성한 후에는 테스트 클래스나 테스트 메서드에 우리의 새로운 어노테이션을 사용할 수 있다.
+
+WithSecurityContextFactory의 구현체를 만들 때, 표준 스프링 어노테이션을 사용할 수 있다는 장점이 있다. 예를 들어 WithUserDetailsSecurityContextFactory에서 @Autowired를 사용할 수 있다.
