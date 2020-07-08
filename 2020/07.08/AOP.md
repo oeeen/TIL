@@ -1,6 +1,45 @@
 # AOP (Aspect Oriented Programming)
 
-관점지향 프로그래밍, 핵심 로직으로부터 부가 기능을 분리한다. 분리한 부가 기능을 aspect라는 독특한 형태로 만들어서 설계, 개발한다.
+관점 지향 프로그래밍이라고 한다. 관점 지향은 쉽게 말해 어떤 로직을 기준으로 핵심적인 관점, 부가적인 관점으로 나누어서 보고 그 관점을 기준으로 각각 모듈화하겠다는 것이다. 여기서 모듈화란 어떤 공통된 로직이나 기능을 하나의 단위로 묶는 것을 말한다.
+
+```java
+class A {
+    method a() {
+        AAAA
+        치킨을 먹는다.
+        BBBB
+    }
+
+    method b() {
+        AAAA
+        삼겹살을 먹는다.
+        BBBB
+    }
+}
+class B {
+    method c() {
+        AAAA
+        공부를 하고, 면접을 본다.
+        BBBB
+    }
+}
+```
+
+위에서 AAAA, BBBB라는 중복 로직을 제거할 수 있다.
+
+```java
+class AAAABBBB {
+    method aaaabbbb(JoinPoint point) {
+        AAAA
+        point.execute()
+        BBBB
+    }
+}
+```
+
+보통은 로깅같은 과정을 AOP로 빼서 모든 컨트롤러를 타기전에 동작하도록 작성할 수 있다. 그리고 트랜잭션 처리를 AOP를 통해 비즈니스 로직과 분리한다. 트랜잭션 처리는 데이터베이스와 관련된 내용이기 때문에, InfraStructure와 깊은 연관을 가지고 있다. 이 인프라 레벨과 비즈니스 로직과의 연관을 끊기 위해 AOP를 통해 분리한다.
+
+스프링의 AOP는 프록시를 통해 AOP를 구현하고 있다.(JDK dynamic proxy, CGLib proxy)
 
 ## 타겟(Target)
 
