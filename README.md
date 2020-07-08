@@ -97,3 +97,4 @@
 - [XSS](/2020/06.26/xss.md)
 - [Blocking, Non-Blocking](/2020/07.02/Blocking_NonBlocking.md)
 - [IaaS, PaaS, SaaS](/2020/07.07/IaaS_PaaS_SaaS.md)
+- [Design Pattern](/2020/07.08/DesignPattern.md)
