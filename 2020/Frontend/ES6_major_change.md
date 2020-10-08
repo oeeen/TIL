@@ -1,8 +1,8 @@
 # ES6 에 새로 추가된 기능
 
-1. [템플릿 리터럴](/2020/05.19/Template_literal.md)
-2. [Symbol](/2020/05.19/Symbol.md)
-3. [let, const](/2020/05.19/let_const.md)
+1. [템플릿 리터럴](/2020/Frontend/Template_literal.md)
+2. [Symbol](/2020/Frontend/Symbol.md)
+3. [let, const](/2020/Frontend/let_const.md)
 4. Math, Number, String 메서드
 5. Arrow Function
 6. Iterator, Generator
