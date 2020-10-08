@@ -45,6 +45,7 @@
 - [Spring Security Logout](/2020/Spring/Security/SpringSecurity_Logout.md)
 - [Spring Security Testing](/2020/Spring/Security/Testing.md)
 - [Spring Security 4.3 레퍼런스 읽기](/2020/Spring/Security/SpringSecurity_4.3.md)
+- [Scheduled annotation에 대해](/2020/Spring/Batch/Scheduled.md)
 
 ## JPA
 
@@ -95,7 +96,8 @@
 ## Book
 
 - [AWS 인프라 구축 가이드 읽고 정리한 글](/2020/Book/aws_infra_structure_guide.md)
-- [Real MySQL 읽고 정리](/2020/Book/RealMySQL_Index.md)
+- [내용 없음 - Real MySQL 읽고 정리](/2020/Book/RealMySQL_Index.md)
+- [내용 없음 - Java 8 In Action](/2020/Book/Java8InAction_Index.md)
 
 ## Etc
 
