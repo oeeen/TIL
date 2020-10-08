@@ -250,4 +250,36 @@ public class ScheduledTask {
 }
 ```
 
-나는 쓸데없이 이렇게 Scheduled 어노테이션 달린 메서드들을 많이 만들었다. 위에서 task로 등록된 메서드들은 언제, 어디서 실행될까? 이 쪽은 task에 디버깅포인트 잡고 stack trace만 살펴봐도 대충 어떤 흐름인지는 이해할 수 있다. 언제 실행되는지는 찾지 못했다. Async stack trace를 보니, ScheduledThreadPoolExcutor쪽에서 무엇인가를 하는 것 같은데.. 정확하게 파악하지 못했다. 디버깅 포인트를 잡지도 못하겠고.. 어떻게 하는지도 모르겠다. 일단 Future라는 것에 대해 이해를 하고 추가적으로 이해되는 부분이 있다면 내용을 추가해야겠다.
+나는 쓸데없이 이렇게 Scheduled 어노테이션 달린 메서드들을 많이 만들었다. 위에서 task로 등록된 메서드들은 언제, 어디서 실행될까? 이 쪽은 task에 디버깅포인트 잡고 stack trace만 살펴봐도 대충 어떤 흐름인지는 이해할 수 있다. 언제 실행되는지는 찾지 못했다. Async stack trace를 보니, ScheduledThreadPoolExcutor쪽에서 무엇인가를 하는 것 같다.
+
+ScheduledThreadPoolExcutor에 run() 메서드를 보자
+
+```java
+public void run() {
+    boolean periodic = isPeriodic();
+    if (!canRunInCurrentRunState(periodic))
+        cancel(false);
+    else if (!periodic)
+        ScheduledFutureTask.super.run();
+    else if (ScheduledFutureTask.super.runAndReset()) {
+        setNextRunTime();
+        reExecutePeriodic(outerTask);
+    }
+}
+```
+
+Period는 주기인 것 같은데, ScheduledFutureTask 생성자에서 넣어준다. 먼저 실행 중이거나 종료된 상태인지 확인하여, 실행 중이라면 cancel시킨다. 그리고 period를 확인하여 0이면 Task를 한번만 실행시킨다. 주기가 있다면(반복해야 한다면) FutureTask에서 runAndReset한다. runAndReset은 future를 수행하고 future를 초기상태로 초기화한다.(성공적으로 실행하고 리셋했으면 true를 리턴한다) 그 다음과정으로 다음에 실행할 시간을 셋팅하고 주기 실행을 위해 reExecutePeriodic 메서드를 실행한다.
+
+```java
+void reExecutePeriodic(RunnableScheduledFuture<?> task) {
+    if (canRunInCurrentRunState(true)) {
+        super.getQueue().add(task);
+        if (!canRunInCurrentRunState(true) && remove(task))
+            task.cancel(false);
+        else
+            ensurePrestart();
+    }
+}
+```
+
+ThreadPoolExecutor에서 work queue를 얻고 그 큐에 task를 넣는다. 그렇게 해서 주기적으로 실행시킨다.
