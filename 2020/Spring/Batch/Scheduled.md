@@ -283,3 +283,5 @@ void reExecutePeriodic(RunnableScheduledFuture<?> task) {
 ```
 
 ThreadPoolExecutor에서 work queue를 얻고 그 큐에 task를 넣는다. 그렇게 해서 주기적으로 실행시킨다.
+
+Scheduled 달려있는 메서드의 흐름을 보고 싶으면, 해당 task를 실행하는 쓰레드를 관찰해보면 된다. 아무 설정도 안하면(Thread Pool 설정이라던가..) scheduling-1 이라는 이름의 쓰레드만 사용할 것이다. 이 쓰레드를 보고 어떤 메서드들의 흐름으로 가는 지 예상해보고 주석을 읽으면 조금 이해가 된다.
